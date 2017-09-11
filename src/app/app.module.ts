@@ -4,13 +4,14 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http';
-import {AngularFireModule,FirebaseAppConfig} from 'angularfire2';
+import { AngularFireModule, FirebaseAppConfig ,AuthProviders,AuthMethods} from 'angularfire2';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SignupPage } from './../pages/signup/signup';
 import { UserService } from '../providers/user/user.service';
 import { AuthService } from './../providers/auth/auth.service';
+import { SigninPage } from '../pages/signin/signin';
 
 
 const firebaseAppConfig: FirebaseAppConfig = {
@@ -21,23 +22,31 @@ const firebaseAppConfig: FirebaseAppConfig = {
   messagingSenderId: "547681878412"
 }
 
+const firebaseAuthConfig = {
+  provider: AuthProviders.Custom,
+  method: AuthMethods.Password
+}
+
+
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    SignupPage
+    SignupPage,
+    SigninPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseAppConfig)
+    AngularFireModule.initializeApp(firebaseAppConfig,firebaseAuthConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    SignupPage
+    SignupPage,
+    SigninPage
   ],
   providers: [
     StatusBar,
