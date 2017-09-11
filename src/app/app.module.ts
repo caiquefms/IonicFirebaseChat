@@ -10,6 +10,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SignupPage } from './../pages/signup/signup';
 import { UserService } from '../providers/user/user.service';
+import { AuthService } from './../providers/auth/auth.service';
+
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: "AIzaSyBByQRIHpemsj-DzYmvK_fXgGRXKFT2kK4",
@@ -41,7 +43,9 @@ const firebaseAppConfig: FirebaseAppConfig = {
     StatusBar,
     SplashScreen,
     UserService,
+    
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthService,
   ]
 })
 export class AppModule {}

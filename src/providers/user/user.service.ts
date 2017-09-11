@@ -1,20 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { AngularFire } from "angularfire2";
+import { AngularFire ,FirebaseListObservable} from "angularfire2";
 import { User } from "../../models/user.model";
+import { BaseService } from '../base.service';
 
 
 @Injectable()
-export class UserService {
+export class UserService extends BaseService{
+
+  users: FirebaseListObservable<User[]>;
 
   constructor(
     public http: Http,
     public af:AngularFire
-  ) {}
+  ) {
+    super();
+    this.users = this.af.database.list('/users');
+  }
   
   create(user:User):firebase.Promise<void>{ 
-    return this.af.database.list(`/users`).push(user);
+    return this.af.database.object(`/users/${user.uid}`).set(user)
+      .catch(this.handleObservableError);
   }
 
 }

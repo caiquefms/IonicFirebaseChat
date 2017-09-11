@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,Loading,LoadingController,AlertController} from 'ionic-angular';
 import { FormGroup,FormBuilder,Validators} from "@angular/forms";
+
+import { FirebaseAuthState } from 'angularfire2';
+
+import { AuthService } from './../../providers/auth/auth.service';
 import { UserService } from '../../providers/user/user.service';
+import { User } from "../../models/user.model";
 
 @Component({
   selector: 'page-signup',
@@ -12,8 +17,11 @@ export class SignupPage {
   signupForm: FormGroup;
 
   constructor(
+    public alertCtrl: AlertController,
+    public authService:AuthService,
     public userService:UserService,
     public formBuilder:FormBuilder,
+    public loadingCtrl:LoadingController,
     public navCtrl: NavController, 
     public navParams: NavParams,
   ) {
@@ -29,10 +37,43 @@ export class SignupPage {
   
  
   onSubmit():void{
-    this.userService.create(this.signupForm.value).
-    then(()=>{
-      console.log("Usuário Cadastrado!");
+    
+    let loading:Loading = this.showLoading();
+    let formUser = this.signupForm.value;
+
+    this.authService.createAuthUser({
+      email: formUser.email,
+      password: formUser.password
+    }).then((authState:FirebaseAuthState)=>{
+      delete formUser.password;
+      formUser.uid = authState.auth.uid;
+      this.userService.create(formUser).
+      then(()=>{
+        console.log("Usuário Cadastrado!");
+        loading.dismiss();
+      }).catch((error:Error)=>{
+        console.log(error);
+        loading.dismiss();
+        this.showAlert(error.message);
+      });
+    }).catch((error:Error)=>{
+      console.log(error);
+      loading.dismiss();
+      this.showAlert(error.message);
     });
+  }
+  private showLoading():Loading{
+    let loading: Loading = this.loadingCtrl.create({
+      content:"Please wait..."
+    });
+    loading.present();
+    return loading;
+  }
+  private showAlert(message:string):void{
+    this.alertCtrl.create({
+      message:message,
+      buttons:['ok']
+    }).present();
   }
 
 }
