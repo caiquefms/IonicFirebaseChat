@@ -1,3 +1,5 @@
+import { CapitalizePipe } from './../pipes/capitalize/capitalize.pipes';
+import { CustomLoggedHeaderComponent } from './../components/custom-logged-header/custom-logged-header.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -30,6 +32,8 @@ const firebaseAuthConfig = {
 
 @NgModule({
   declarations: [
+    CapitalizePipe,
+    CustomLoggedHeaderComponent,
     MyApp,
     HomePage,
     SignupPage,
