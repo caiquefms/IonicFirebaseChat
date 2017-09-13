@@ -14,6 +14,9 @@ import { SignupPage } from './../pages/signup/signup';
 import { UserService } from '../providers/user/user.service';
 import { AuthService } from './../providers/auth/auth.service';
 import { SigninPage } from '../pages/signin/signin';
+import { ChatPage } from './../pages/chat/chat';
+import { ChatService } from '../providers/chat/chat.service';
+import { MessageService } from './../providers/message/message.service';
 
 
 const firebaseAppConfig: FirebaseAppConfig = {
@@ -34,6 +37,7 @@ const firebaseAuthConfig = {
   declarations: [
     CapitalizePipe,
     CustomLoggedHeaderComponent,
+    ChatPage,
     MyApp,
     HomePage,
     SignupPage,
@@ -49,6 +53,7 @@ const firebaseAuthConfig = {
   entryComponents: [
     MyApp,
     HomePage,
+    ChatPage,
     SignupPage,
     SigninPage
   ],
@@ -56,9 +61,10 @@ const firebaseAuthConfig = {
     StatusBar,
     SplashScreen,
     UserService,
-    
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
+    ChatService,
+    MessageService,
   ]
 })
 export class AppModule {}

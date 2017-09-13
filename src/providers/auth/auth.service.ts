@@ -5,7 +5,6 @@ import 'rxjs/add/operator/first';
 
 import { AngularFireAuth, FirebaseAuthState} from 'angularfire2';
 import { BaseService } from '../base.service';
-import { Observable } from 'rxjs';
 
 
 @Injectable()

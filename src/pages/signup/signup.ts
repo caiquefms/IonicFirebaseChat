@@ -51,8 +51,8 @@ export class SignupPage {
             password: formUser.password
           }).then((authState:FirebaseAuthState)=>{
             delete formUser.password;
-            formUser.uid = authState.auth.uid;
-            this.userService.create(formUser).
+            let uui:string = authState.auth.uid;
+            this.userService.create(formUser,uui).
             then(()=>{
               console.log("Usuário Cadastrado!");
               this.navCtrl.setRoot(HomePage);
