@@ -1,7 +1,7 @@
 import { MessageService } from './../../providers/message/message.service';
 import { AuthService } from './../../providers/auth/auth.service';
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild} from '@angular/core';
+import { Content,NavController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user.model';
 import { UserService } from '../../providers/user/user.service';
 import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
@@ -10,11 +10,14 @@ import { Message } from './../../models/message.model';
 import firebase from 'firebase';
 import { Chat } from "../../models/chat.model";
 
+
 @Component({
   selector: 'page-chat',
   templateUrl: 'chat.html',
 })
 export class ChatPage {
+
+  @ViewChild(Content) content:Content;
   messages:FirebaseListObservable<Message[]>;
   pageTitle:string;
   sender:User;
@@ -46,15 +49,26 @@ export class ChatPage {
       this.chat1 = this.chatService.getDeepChat(this.sender.$key,this.recipient.$key);
       this.chat2 = this.chatService.getDeepChat(this.recipient.$key,this.sender.$key);
 
+      let doSubscription = ()=>{
+        this.messages.subscribe((messages:Message[])=>{
+          this.ScrollToBottom();
+        });
+      };
+
       this.messages = this.messageService
       .getMessage(this.sender.$key,this.recipient.$key);
       
       this.messages
       .first().subscribe((messages:Message[])=>{
-        if(messages.length == 0){
+        if(messages.length === 0){
           this.messages = this.messageService
           .getMessage(this.recipient.$key,this.sender.$key);
+
+          doSubscription();
+        }else{
+          doSubscription();
         }
+        
       });
     });
   }
@@ -82,4 +96,13 @@ export class ChatPage {
       });
     }
   }
+
+  private ScrollToBottom(duration?:number):void{
+    setTimeout(()=>{
+      if(this.content){
+        this.content.scrollToBottom(duration || 300);
+      }
+    },50);
+  }
+
 }

@@ -40,7 +40,7 @@ export class AuthService extends BaseService{
       this.auth
       .first()
       .subscribe((authState:FirebaseAuthState)=>{
-        (authState) ? resolve(true) : reject(false); 
+        authState ? resolve(true) : reject(false); 
       });
     });
   }

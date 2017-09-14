@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, MenuController } from 'ionic-angular';
 
 import { FirebaseListObservable } from 'angularfire2';
 
@@ -26,6 +26,7 @@ export class HomePage {
     public authService:AuthService,
     public chatService:ChatService,
     public navCtrl: NavController,
+    public menuCtrl:MenuController,
     public userService:UserService
   ) {}
 
@@ -36,8 +37,37 @@ export class HomePage {
   ionViewDidLoad(){
     this.chats = this.chatService.chats;
     this.users = this.userService.users;
-       
+    this.menuCtrl.enable(true,"user-menu");
   }
+  filterItens(event:any):void{
+    let searchTerm:string = event.target.value;
+
+    this.chats = this.chatService.chats;
+    this.users = this.userService.users;
+    
+    if(searchTerm){
+      switch(this.view){
+        case 'chats':
+          this.chats = <FirebaseListObservable<Chat[]>>this.chats
+          .map((chats:Chat[])=>{
+            return chats.filter((chat:Chat)=>{
+              return (chat.title.toLowerCase().indexOf(searchTerm.toLowerCase())>-1);
+            });
+          });
+          break;
+        case 'users':
+          this.users = <FirebaseListObservable<User[]>>this.users
+          .map((users:User[])=>{
+            return users.filter((user:User)=>{
+              return (user.name.toLowerCase().indexOf(searchTerm.toLocaleLowerCase())>-1);
+            });
+          });
+          break;
+      }
+    }
+
+  }
+
   onChatCreate(recipientUser:User):void{
     this.userService.currentUser
     .first().subscribe((currentUser:User)=>{
