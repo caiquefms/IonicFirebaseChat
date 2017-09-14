@@ -1,3 +1,4 @@
+import { User } from './../../models/user.model';
 import { AlertController, App, MenuController } from 'ionic-angular';
 import { Component,Input} from '@angular/core';
 import { BaseComponent } from '../base.component';
@@ -11,6 +12,8 @@ import { AuthService } from "../../providers/auth/auth.service";
 export class CustomLoggedHeaderComponent extends BaseComponent{
 
   @Input() title: string;
+  @Input() user:User;
+  
 
   constructor(
     public alertCtrl: AlertController,

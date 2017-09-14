@@ -21,6 +21,7 @@ import { MessageService } from './../providers/message/message.service';
 import { MessageBoxComponent } from '../components/message-box/message-box.component';
 import { UserInfoComponent } from '../components/user-info/user-info.component';
 import { UserMenuComponent } from './../components/user-menu/user-menu.component';
+import { ProgressBarComponent } from '../components/progress-bar/progress-bar.component';
 
 
 const firebaseAppConfig: FirebaseAppConfig = {
@@ -44,6 +45,7 @@ const firebaseAuthConfig = {
     MessageBoxComponent,
     UserInfoComponent,
     UserMenuComponent,
+    ProgressBarComponent,
     ChatPage,
     MyApp,
     HomePage,
